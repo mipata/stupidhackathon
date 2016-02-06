@@ -8,7 +8,10 @@ var classes = [
 ];
 
 var ids = [
-	'Billboard-ad'
+	'Billboard-ad',
+	'my-adsLREC1',
+	'my-adsLREC2',
+	'my-adsLREC3'
 ];
 
 function hideChildren(node) {
@@ -62,4 +65,4 @@ function hideChildren(node) {
 	}
 }
 
-hideChildren(document.body);
+setInterval(function(){ hideChildren(document.body); }, 1000);

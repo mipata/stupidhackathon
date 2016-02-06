@@ -1,31 +1,35 @@
-var classes = [
-	'advertisement',
-	'advertising',
-	'adzerk-vote',
-	'advert',
-	'ob-widget-section',
-	'js-stream-ad',
-	'side-ad',
-	'ads-ad'
-];
+(function() {
 
-var ids = [
-	'Billboard-ad',
-	'my-adsLREC1',
-	'my-adsLREC2',
-	'my-adsLREC3',
-	'ad_main'
-];
+	var classes = [
+		'advertisement',
+		'advertising',
+		'adzerk-vote',
+		'advert',
+		'ob-widget-section',
+		'js-stream-ad',
+		'side-ad',
+		'ads-ad'
+	];
 
-var idRegex = [
-'google_ads',
-'cto_banner_content',
-'banner'
-];
+	var ids = [
+		'Billboard-ad',
+		'my-adsLREC1',
+		'my-adsLREC2',
+		'my-adsLREC3',
+		'ad_main'
+	];
 
-function hideChildren(node) {
+	var idRegex = [
+		'google_ads',
+		'cto_banner_content',
+		'banner'
+	];
+
 	var classString = "";
 	var dotNotationClassString = "";
+	var idString = "";
+	var idRegexString = "";
+
 	for(var i = 0; i < classes.length; i++){
 		classString += ""+classes[i];
 		dotNotationClassString += "." + classes[i];
@@ -40,7 +44,6 @@ function hideChildren(node) {
 		dotNotationClassString += ",";
 	}
 
-	var idString = "";
 	for(var i = 0; i < ids.length; i++){
 		idString += ""+ids[i];
 		dotNotationClassString += "#" + ids[i];
@@ -51,7 +54,6 @@ function hideChildren(node) {
 		}
 	}
 
-	var idRegexString = "";
 	for(var i = 0; i < idRegex.length; i++){
 		idRegexString += ""+idRegex[i];
 		idString += "|" + idRegex[i] + ".*";
@@ -67,36 +69,42 @@ function hideChildren(node) {
 	console.log("id Regex: " + idString);
 	var idRe = new RegExp(idString, 'ig');
 
-	if(re.test($(node).attr("class"))) {
-		return;
-	}
+	function hideChildren(node) {
+		if(re.test($(node).attr("class"))) {
+			return;
+		}
 
-	if(idRe.test($(node).attr("id"))) {
-		return;
-	}
+		if(idRe.test($(node).attr("id"))) {
+			return;
+		}
 
-	var dontSkip = false;
-	var childNodes = $(node).find(dotNotationClassString);
-	console.log("[id^=\'" + idRegexString + "\']");
-	if(childNodes.length > 0){
-		dontSkip = true;
-	} else {
-		for(var i = 0; i < idRegex.length && !dontSkip; i++){
-			if(childNodes.length == 0){
-				childNodes = $(node).find("[id^=" + idRegex[i] + "]");
-			} else {
-				dontSkip = true;
+		var dontSkip = false;
+		var childNodes = $(node).find(dotNotationClassString);
+		console.log("[id^=\'" + idRegexString + "\']");
+		if(childNodes.length > 0){
+			dontSkip = true;
+		} else {
+			for(var i = 0; i < idRegex.length && !dontSkip; i++){
+				if(childNodes.length == 0){
+					childNodes = $(node).find("[id^=" + idRegex[i] + "]");
+				} else {
+					dontSkip = true;
+				}
 			}
 		}
+		
+		if(childNodes.length > 0 || dontSkip) {
+			$(node).css("background-image", "none").children().each(function(index, element) {
+				hideChildren(element);
+			});
+		} else {
+			$(node).addClass("stupidShitHide");
+		}
 	}
-	
-	if(childNodes.length > 0 || dontSkip) {
-		$(node).css("background-image", "none").children().each(function(index, element) {
+
+	setInterval(function(){
+		$(document.body).children().each(function(index, element) {
 			hideChildren(element);
 		});
-	} else {
-		$(node).addClass("stupidShitHide");
-	}
-}
-
-setInterval(function(){ hideChildren(document.body); }, 1000);
+	}, 1000);
+})();

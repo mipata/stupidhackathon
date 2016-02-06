@@ -1,7 +1,9 @@
-function hideChildren(node) {
-	if($(node).hasClass("advertisement")) return;
+var adSelector = ".advertisement";
 
-	if($(node).find(".advertisement").length > 0) {
+function hideChildren(node) {
+	if($(node).is(adSelector)) return;
+
+	if($(node).find(adSelector).length > 0) {
 		$(node).css("background-image", "none").children().each(function(index, element) {
 			hideChildren(element);
 		});

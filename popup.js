@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 document.addEventListener('DOMContentLoaded', function () {
-  chrome.tabs.executeScript(null,
-      {code:"document.body.style.backgroundColor='red'"});
+  chrome.tabs.executeScript(null, { file: "app.js" });
   window.close();
 });

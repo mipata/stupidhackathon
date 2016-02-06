@@ -4,14 +4,22 @@ var classes = [
 	'adzerk-vote',
 	'advert',
 	'ob-widget-section',
-	'js-stream-ad'
+	'js-stream-ad',
+	'side-ad'
 ];
 
 var ids = [
 	'Billboard-ad',
 	'my-adsLREC1',
 	'my-adsLREC2',
-	'my-adsLREC3'
+	'my-adsLREC3',
+	'ad_main'
+];
+
+var idRegex = [
+'google_ads',
+'cto_banner_content',
+'banner'
 ];
 
 function hideChildren(node) {
@@ -42,9 +50,20 @@ function hideChildren(node) {
 		}
 	}
 
+	var idRegexString = "";
+	for(var i = 0; i < idRegex.length; i++){
+		idRegexString += ""+idRegex[i];
+		idString += "|" + idRegex[i] + ".*";
+
+		if(i < idRegex.length - 1) {
+			idRegexString += " ";
+		}
+	}
+
 	console.log(dotNotationClassString);
 	var re = new RegExp(classString, 'ig');
 
+	console.log("id Regex: " + idString);
 	var idRe = new RegExp(idString, 'ig');
 
 	if(re.test($(node).attr("class"))) {
@@ -55,8 +74,22 @@ function hideChildren(node) {
 		return;
 	}
 
+	var dontSkip = false;
 	var childNodes = $(node).find(dotNotationClassString);
-	if(childNodes.length > 0) {
+	console.log("[id^=\'" + idRegexString + "\']");
+	if(childNodes.length > 0){
+		dontSkip = true;
+	} else {
+		for(var i = 0; i < idRegex.length && !dontSkip; i++){
+			if(childNodes.length == 0){
+				childNodes = $(node).find("[id^=" + idRegex[i] + "]");
+			} else {
+				dontSkip = true;
+			}
+		}
+	}
+	
+	if(childNodes.length > 0 || dontSkip) {
 		$(node).css("background-image", "none").children().each(function(index, element) {
 			hideChildren(element);
 		});

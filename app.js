@@ -1,6 +1,9 @@
 var classes = [
 	'advertisement',
-	'ad'
+	'advertising',
+	'adzerk-vote',
+	'advert',
+	'ob-widget-section'
 ];
 
 function hideChildren(node) {
@@ -15,6 +18,7 @@ function hideChildren(node) {
 			dotNotationClassString += ",";
 		}
 	}
+
 	var re = new RegExp(classString, 'ig');
 
 	if(re.test($(node).attr("class"))) {

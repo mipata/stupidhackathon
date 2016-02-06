@@ -5,7 +5,8 @@ var classes = [
 	'advert',
 	'ob-widget-section',
 	'js-stream-ad',
-	'side-ad'
+	'side-ad',
+	'ads-ad'
 ];
 
 var ids = [

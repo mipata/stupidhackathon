@@ -6,7 +6,8 @@ function hideChildren(node) {
 			hideChildren(element);
 		});
 	} else {
-		$(node).css("visibility", "hidden");
+		// $(node).css("visibility", "hidden");
+		$(node).css("-webkit-filter", "blur(8px) grayscale(1)");
 	}
 }
 

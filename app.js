@@ -3,7 +3,12 @@ var classes = [
 	'advertising',
 	'adzerk-vote',
 	'advert',
-	'ob-widget-section'
+	'ob-widget-section',
+	'js-stream-ad'
+];
+
+var ids = [
+	'Billboard-ad'
 ];
 
 function hideChildren(node) {
@@ -19,9 +24,31 @@ function hideChildren(node) {
 		}
 	}
 
+	if(ids.length > 0 && dotNotationClassString.length > 0){
+		dotNotationClassString += ",";
+	}
+
+	var idString = "";
+	for(var i = 0; i < ids.length; i++){
+		idString += ""+ids[i];
+		dotNotationClassString += "#" + ids[i];
+
+		if(i < ids.length - 1) {
+			idString += "|";
+			dotNotationClassString += ",";
+		}
+	}
+
+	console.log(dotNotationClassString);
 	var re = new RegExp(classString, 'ig');
 
+	var idRe = new RegExp(idString, 'ig');
+
 	if(re.test($(node).attr("class"))) {
+		return;
+	}
+
+	if(idRe.test($(node).attr("id"))) {
 		return;
 	}
 
